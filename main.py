@@ -6,30 +6,29 @@ import time
 
 
 prompts = [
-    "The quick brown fox jumps over the lazy dog.",
-    "A towering genius may exist in a bricklayer, poet, or coal miner.",
-    "Jaded zombies acted quaintly but kept driving their oxen forward.",
-    "How vexingly quick daft zebras jump!",
-    "Amazingly few discotheques provide jukeboxes.",
-    "We promptly judged antique onyx buckles for prizes.",
-    "Crazy Fredrick bought many very exquisite opal jewels.",
-    "The five boxing wizards jump quickly.",
-    "Pack my box with five dozen liquor jugs.",
-    "We promptly served the cooling fried chicken.",
-    "My faxed joke won a pager in the cable TV quiz show.",
-    "Amazingly few discotheques provide jukeboxes.",
-    "The quick brown dog jumps over the lazy fox.",
-    "Sphinx of black quartz, judge my vow.",
-    "How razorback-jumping frogs can level six piqued gymnasts!",
-    "The five boxing wizards jump quickly.",
-    "Jaded zombies acted quaintly but kept driving their oxen forward.",
-    "The quick onyx goblin jumps over the lazy dwarf.",
-    "We promptly judged antique onyx buckles for prizes.",
-    "Crazy Fredrick bought many very exquisite opal jewels."
+"The quick brown fox jumps over the lazy dog in the lush green meadow on a warm summer day.",
+"A towering genius may exist in a bricklayer, poet, or coal miner, hidden away from the world, waiting to be discovered.",
+"Jaded zombies acted quaintly but kept driving their oxen forward, trudging through the desolate wasteland in search of brains.",
+"How vexingly quick daft zebras jump! Their agility and speed are truly a sight to behold in the wild African savanna.",
+"Amazingly few discotheques provide jukeboxes these days, a sad reminder of the fading glory of the disco era.",
+"We promptly judged antique onyx buckles for prizes at the prestigious gemstone exhibition, admiring their timeless beauty.",
+"Crazy Fredrick bought many very exquisite opal jewels from the eccentric jeweler, adding to his already impressive collection.",
+"The five boxing wizards jump quickly, dodging spells and counterspells in their epic duel of magical might.",
+"Pack my box with five dozen liquor jugs carefully, ensuring they don't break during the long journey ahead.",
+"We promptly served the cooling fried chicken to the hungry crowd, its aroma wafting through the air enticingly.",
+"My faxed joke won a pager in the cable TV quiz show, a relic of the past that brought back nostalgic memories.",
+"Amazingly few discotheques provide jukeboxes nowadays, but those that do offer a unique and retro experience.",
+"The quick brown dog jumps over the lazy fox, asserting its dominance in the backyard territory.",
+"Sphinx of black quartz, judge my vow to unravel your ancient riddles and unlock the secrets of the ages.",
+"How razorback-jumping frogs can level six piqued gymnasts! A truly remarkable feat of amphibian agility.",
+"The five boxing wizards jump quickly, their robes swirling as they exchange lightning-fast blows in the arena.",
+"Jaded zombies acted quaintly but kept driving their oxen forward, driven by an insatiable hunger for living flesh.",
+"The quick onyx goblin jumps over the lazy dwarf, snatching the glittering treasure from under his nose.",
+"We promptly judged antique onyx buckles for prizes, scrutinizing each intricate detail and admiring the artistry.",
+"Crazy Fredrick bought many very exquisite opal jewels, each one more breathtakingly beautiful than the last."
 ]
-
 def is_key_backspace(key):
-    return key in ('KEY_BACKSPACE', chr(127), chr(8), '\b', '\x08', '\x7f') 
+    return key in ("KEY_BACKSPACE", chr(127), chr(8), "\b", "\x08", "\x7f") 
 
 def typing_err_ok_logic(stdcsr, picked):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
