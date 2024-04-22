@@ -1,5 +1,6 @@
 import curses
 from curses import wrapper
+import curses.ascii
 from random import choice
 import time
 
@@ -27,6 +28,9 @@ prompts = [
     "Crazy Fredrick bought many very exquisite opal jewels."
 ]
 
+def is_key_backspace(key):
+    return key in ('KEY_BACKSPACE', chr(127), chr(8), '\b', '\x08', '\x7f') 
+
 def typing_err_ok_logic(stdcsr, picked):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
@@ -43,7 +47,7 @@ def typing_err_ok_logic(stdcsr, picked):
         key = stdcsr.getkey()
         if start_time == 0:
             start_time = time.time()
-        if ord(key) == 127:
+        if is_key_backspace(key):
             i -= 1
             typed = typed[:-1]
             if i < 0:
@@ -91,6 +95,13 @@ def start_screen(stdcsr):
     stdcsr.addstr(y, x, "Press any key to Continue", curses.color_pair(1))
     stdcsr.getkey()
 
+def end_screen(stdcsr, x, y):
+    stdcsr.addstr(y, x, "Press 'r' key to to play again", curses.color_pair(1))
+    stdcsr.addstr(y + 2, x, "Press any to key to exit", curses.color_pair(1))
+    k = stdcsr.getkey()
+    if k == "r":
+        main(stdcsr)
+
 def main(stdcsr):
     start_screen(stdcsr)
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -113,8 +124,7 @@ def main(stdcsr):
     stdcsr.addstr(y + 5, x, f"Error: {err:.2f}%", curses.color_pair(2))
     stdcsr.getkey()
     stdcsr.clear()
-    stdcsr.addstr(y, x, "Press any key to exit", curses.color_pair(1))
-    stdcsr.getkey()
+    end_screen(stdcsr, x, y)
 
 if __name__ == "__main__":
     wrapper(main)
