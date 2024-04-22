@@ -4,7 +4,6 @@ import curses.ascii
 from random import choice
 import time
 
-
 prompts = [
 "The quick brown fox jumps over the lazy dog in the lush green meadow on a warm summer day.",
 "A towering genius may exist in a bricklayer, poet, or coal miner, hidden away from the world, waiting to be discovered.",
@@ -31,9 +30,6 @@ def is_key_backspace(key):
     return key in ("KEY_BACKSPACE", chr(127), chr(8), "\b", "\x08", "\x7f") 
 
 def typing_err_ok_logic(stdcsr, picked):
-    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
     i = 0
     y = 1
     x = 10
@@ -57,13 +53,15 @@ def typing_err_ok_logic(stdcsr, picked):
             i -= 1
         elif key == picked[i]:
             stdcsr.addstr(y, x + i, key, curses.color_pair(1))
+            typed += key
         else:
             stdcsr.addstr(y, x + i, key, curses.color_pair(2))
-        typed += key
+            typed += key
         i += 1
         if i <= 0:
             i = 0
     end_time = time.time()
+    # print(f"Typed: {final_typed}, Picked: {picked}\n")
     error = calculate_error_rate(typed, picked)
     return (end_time - start_time), error
 
@@ -76,10 +74,6 @@ def calculate_error_rate(typed, picked):
     return error_rate
 
 def start_screen(stdcsr):
-    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
-
     max_y, max_x = stdcsr.getmaxyx()
     y = max_y // 2  # Center the text vertically
     x = max_x // 2 - len("Welcome to the Typing Game") // 2  # Center the text horizontally
@@ -94,7 +88,7 @@ def start_screen(stdcsr):
     stdcsr.addstr(y, x, "Press any key to Continue", curses.color_pair(1))
     stdcsr.getkey()
 
-def end_screen(stdcsr, x, y):
+def end_screen(stdcsr, x,  y):
     stdcsr.addstr(y, x, "Press 'r' key to to play again", curses.color_pair(1))
     stdcsr.addstr(y + 2, x, "Press any to key to exit", curses.color_pair(1))
     k = stdcsr.getkey()
@@ -102,28 +96,31 @@ def end_screen(stdcsr, x, y):
         main(stdcsr)
 
 def main(stdcsr):
-    start_screen(stdcsr)
+
+    # Set up colors
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_BLUE, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+
+    # Clear screen and show message to start the game
+    start_screen(stdcsr)
     picked = choice(prompts)
     stdcsr.clear()
-    stdcsr.addstr(1, 10, picked, curses.color_pair(3))
+    stdcsr.addstr(1, 10, picked, curses.color_pair(3))              # The prompt
     stdcsr.refresh()
-    curses.curs_set(0)  
+    curses.curs_set(0)                                              # Hide the cursor    
     delta_time, err = typing_err_ok_logic(stdcsr, picked)
     stdcsr.clear()
     your_time_msg = f"Your time is {delta_time:.2f} seconds"
     wpm = len(picked.split(" ")) / (delta_time/60)
     max_y, max_x = stdcsr.getmaxyx()
-    y = max_y // 2  # Center the text vertically
-    x = max_x // 2 - len(your_time_msg) // 2  # Center the text horizontally
+    y = max_y // 2                                                  # Center the text vertically
+    x = max_x // 2 - len(your_time_msg) // 2                        # Center the text horizontally
     stdcsr.addstr(y, x, your_time_msg, curses.color_pair(1))
-    stdcsr.addstr(y + 3, x, f"WPM: {wpm}", curses.color_pair(1))
+    stdcsr.addstr(y + 3, x, f"WPM: {wpm:.1f}", curses.color_pair(1))
     stdcsr.addstr(y + 5, x, f"Error: {err:.2f}%", curses.color_pair(2))
-    stdcsr.getkey()
+    end_screen(stdcsr, x, y + 7)                                    # Show end screen       
     stdcsr.clear()
-    end_screen(stdcsr, x, y)
 
 if __name__ == "__main__":
     wrapper(main)
